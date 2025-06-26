@@ -18,21 +18,11 @@ public class RegisterExpenseUseCase
 
     private void Validate(RequestRegisterExpenseJson request)
     {
-        if (string.IsNullOrEmpty(request.Title.Trim()))
+        var result = new RegisterExpenseValidator().Validate(request);
+
+        if (result.IsValid == false)
         {
-            throw new ArgumentException("Title cannot be empty.");
-        }
-        if (request.Amount <= 0)
-        {
-            throw new ArgumentException("Amount must be greater than zero.");
-        }
-        if (DateTime.Compare(request.Date, DateTime.UtcNow) > 0)
-        {
-            throw new ArgumentException("Expenses cannot be for the future.");
-        }
-        if (Enum.IsDefined(typeof(PaymentType), request.PaymentType) == false)
-        {
-            throw new ArgumentException("Payment type is not valid.");
+            result.Errors.Select(x => x.ErrorMessage).ToList();
         }
     }
 }
