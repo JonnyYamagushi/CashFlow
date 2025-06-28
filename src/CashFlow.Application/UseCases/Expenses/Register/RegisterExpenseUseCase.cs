@@ -10,6 +10,15 @@ public class RegisterExpenseUseCase
     {
         Validate(request);
 
+        var entity = new Domain.Entities.Expense
+        {
+            Title = request.Title,
+            Description = request.Description,
+            Amount = request.Amount,
+            Date = request.Date,
+            PaymentType = (Domain.Enums.PaymentType)request.PaymentType
+        };
+
         return new ResponseRegisterExpenseJson
         {
             Title = request.Title
