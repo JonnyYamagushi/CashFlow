@@ -6,4 +6,5 @@ public interface IExpenseReadOnlyRepository
 {
     Task<List<Expense>> GetAll();
     Task<Expense?> GetByIdAsync(long id);
+    Task<List<Expense>> GetByMonth(DateOnly month);
 }
