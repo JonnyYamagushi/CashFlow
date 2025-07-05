@@ -11,6 +11,13 @@
     <None Remove="UseCases\Expenses\Reports\Pdf\Fonts\Raleway-Regular.ttf" />
     <None Remove="UseCases\Expenses\Reports\Pdf\Fonts\WorkSans-Black.ttf" />
     <None Remove="UseCases\Expenses\Reports\Pdf\Fonts\WorkSans-Regular.ttf" />
+    <None Remove="UseCases\Expenses\Reports\Pdf\Image\profile-pic.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="UseCases\Expenses\Reports\Pdf\Image\profile-pic.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

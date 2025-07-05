@@ -133,6 +133,24 @@ namespace CashFlow.Domain.Reports {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hey.
+        /// </summary>
+        public static string HEY {
+            get {
+                return ResourceManager.GetString("HEY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jonny Yamagushi.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment Type.
         /// </summary>
         public static string PAYMENT_TYPE {

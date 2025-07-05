@@ -141,6 +141,12 @@
   <data name="EXPENSES_FOR" xml:space="preserve">
     <value>Expenses For</value>
   </data>
+  <data name="HEY" xml:space="preserve">
+    <value>Hey</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Jonny Yamagushi</value>
+  </data>
   <data name="PAYMENT_TYPE" xml:space="preserve">
     <value>Payment Type</value>
   </data>
