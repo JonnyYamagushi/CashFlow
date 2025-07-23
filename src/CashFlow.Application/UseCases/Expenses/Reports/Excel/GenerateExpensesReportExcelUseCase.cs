@@ -1,4 +1,5 @@
 ﻿using CashFlow.Domain.Enums;
+using CashFlow.Domain.Extensions;
 using CashFlow.Domain.Reports;
 using CashFlow.Domain.Repositories.Expenses;
 using ClosedXML.Excel;
@@ -40,7 +41,7 @@ internal class GenerateExpensesReportExcelUseCase : IGenerateExpensesReportExcel
         {
             workSheet.Cell($"A{row}").Value = expense.Title;
             workSheet.Cell($"B{row}").Value = expense.Date;
-            workSheet.Cell($"C{row}").Value = ConvertPaymentType(expense.PaymentType);
+            workSheet.Cell($"C{row}").Value = expense.PaymentType.PaymentTypeToString();
             workSheet.Cell($"D{row}").Style.NumberFormat.Format = $"-{CURRENCY_SYMBOL} #,##0.00";
             workSheet.Cell($"D{row}").Value = expense.Amount;
             workSheet.Cell($"E{row}").Value = expense.Description;
@@ -55,19 +56,6 @@ internal class GenerateExpensesReportExcelUseCase : IGenerateExpensesReportExcel
         workbook.SaveAs(file);
 
         return file.ToArray();
-    }
-
-    private string ConvertPaymentType(PaymentType paymentType)
-    {
-        return paymentType switch
-        {
-            PaymentType.Cash => ResourceReportGenerationMessages.Cash,
-            PaymentType.CreditCard => ResourceReportGenerationMessages.CreditCard,
-            PaymentType.DebitCard => ResourceReportGenerationMessages.DebitCard,
-            PaymentType.BankTransfer => ResourceReportGenerationMessages.BankTransfer,
-            PaymentType.Pix => ResourceReportGenerationMessages.PIX,
-            _ => string.Empty
-        };
     }
 
     private void InsertHeader(IXLWorksheet workSheet)
