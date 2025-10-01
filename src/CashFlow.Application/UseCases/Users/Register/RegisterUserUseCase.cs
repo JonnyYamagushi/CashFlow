@@ -12,16 +12,16 @@ using FluentValidation.Results;
 
 namespace CashFlow.Application.UseCases.Users.Register;
 
-internal class RegisterUserUseCase : IRegisterUserUseCase
+public class RegisterUserUseCase : IRegisterUserUseCase
 {
     private readonly IMapper _mapper;
-    private readonly IPasswordEncripter _passwordEncripter;
+    private readonly IPasswordEncrypter _passwordEncripter;
     private readonly IUserReadOnlyRepository _userReadOnlyRepository;
     private readonly IUserWriteOnlyRepository _userWriteOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IAccessTokenGerator _tokenGerator;
 
-    public RegisterUserUseCase(IMapper mapper, IPasswordEncripter passwordEncripter, IUserReadOnlyRepository userReadOnlyRepository, IUserWriteOnlyRepository userWriteOnlyRepository, IAccessTokenGerator tokenGerator, IUnitOfWork unitOfWork)
+    public RegisterUserUseCase(IMapper mapper, IPasswordEncrypter passwordEncripter, IUserReadOnlyRepository userReadOnlyRepository, IUserWriteOnlyRepository userWriteOnlyRepository, IAccessTokenGerator tokenGerator, IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _passwordEncripter = passwordEncripter;

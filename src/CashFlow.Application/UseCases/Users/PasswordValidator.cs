@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace CashFlow.Application.UseCases.Users;
 
-internal partial class PasswordValidator<T> : PropertyValidator<T, string>
+public partial class PasswordValidator<T> : PropertyValidator<T, string>
 {
     private const string ERROR_MESSAGE_KEY = "ErrorMessage";
 

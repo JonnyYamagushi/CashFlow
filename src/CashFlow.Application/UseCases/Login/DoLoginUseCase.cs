@@ -10,10 +10,10 @@ namespace CashFlow.Application.UseCases.Login;
 public class DoLoginUseCase : IDoLoginUseCase
 {
     private readonly IUserReadOnlyRepository _repository;
-    private readonly IPasswordEncripter _passwordEncripter;
+    private readonly IPasswordEncrypter _passwordEncripter;
     private readonly IAccessTokenGerator _accessTokenGenerator;
 
-    public DoLoginUseCase(IUserReadOnlyRepository repository, IPasswordEncripter passwordEncripter, IAccessTokenGerator accessTokenGenerator)
+    public DoLoginUseCase(IUserReadOnlyRepository repository, IPasswordEncrypter passwordEncripter, IAccessTokenGerator accessTokenGenerator)
     {
         _repository = repository;
         _passwordEncripter = passwordEncripter;
