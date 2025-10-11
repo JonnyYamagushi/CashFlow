@@ -12,21 +12,19 @@ using Xunit;
 
 namespace WebApi.Test.Login;
 
-public class DoLoginTest : IClassFixture<CustomWebApplicationFactory>
+public class DoLoginTest : CashFlowClassFixture
 {
     private const string METHOD = "api/login";
 
-    private readonly HttpClient _httpClient;
     private readonly string _email;
     private readonly string _name;
     private readonly string _password;
 
-    public DoLoginTest(CustomWebApplicationFactory factory)
+    public DoLoginTest(CustomWebApplicationFactory factory) : base(factory)
     {
-        _httpClient = factory.CreateClient();
-        _email = factory.GetUserEmail();
-        _name = factory.GetUserName();
-        _password = factory.GetUserPassword();
+        _email = factory.User_Team_Member.GetEmail();
+        _name = factory.User_Team_Member.GetName();
+        _password = factory.User_Team_Member.GetPassword();
     }
 
     [Fact]
@@ -38,7 +36,7 @@ public class DoLoginTest : IClassFixture<CustomWebApplicationFactory>
             Password = _password
         };
 
-        var result = await _httpClient.PostAsJsonAsync(METHOD, request);
+        var result = await DoPost(METHOD, request);
 
         result.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -56,9 +54,11 @@ public class DoLoginTest : IClassFixture<CustomWebApplicationFactory>
     {
         var request = RequestLoginJsonBuilder.Build();
 
-        _httpClient.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue(cultureInfo));
-
-        var result = await _httpClient.PostAsJsonAsync(METHOD, request);
+        var result = await DoPost(
+            requestUri: METHOD,
+            request: request,
+            culture: cultureInfo
+        );
 
         result.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 

@@ -1,24 +1,26 @@
 ﻿using CashFlow.Application.UseCases.Users.Register;
+using CashFlow.Application.UseCases.Users.Update;
+using CashFlow.Domain.Entities;
 using CashFlow.Exception;
 using CashFlow.Exception.ExceptionsBase;
 using CommonTestUtilities.Cryptography;
+using CommonTestUtilities.Entities;
+using CommonTestUtilities.LoggedUser;
 using CommonTestUtilities.Mapper;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
 using CommonTestUtilities.Token;
 using FluentAssertions;
 
-namespace UseCases.Test.Users.Register;
+namespace UseCases.Test.Users;
 
-public class RegisterUserUseCaseTest
+public class UpdateUserUseCaseTest
 {
-    private RegisterUserUseCase CreateUseCase(string? email = null)
+    private UpdateUserUseCase CreateUseCase(User user, string? email = null)
     {
-        var mapper = MapperBuilder.Build();
         var unitOfWork = UnitOfWorkBuilder.Build();
-        var writeRepository = UserWriteOnlyRepositoryBuilder.Build();
-        var passwordEncripter = new PasswordEncrypterBuilder().Build();
-        var jwtTokenGenerator = JwtTokenGeneratorBuilder.Build();
+        var updateRepository = UserUpdateOnlyRepositoryBuilder.Build(user);
+        var loogedUser = LoggedUserBuilder.Build(user);
         var readRepository = new UserReadOnlyRepositoryBuilder();
 
         if (string.IsNullOrWhiteSpace(email) == false)
@@ -26,32 +28,36 @@ public class RegisterUserUseCaseTest
             readRepository.ExistActiveUserWithEmail(email);
         }
 
-        return new RegisterUserUseCase(mapper, passwordEncripter, readRepository.Build(), writeRepository, jwtTokenGenerator, unitOfWork);
+        return new UpdateUserUseCase(loogedUser, updateRepository, readRepository.Build(), unitOfWork);
     }
 
     [Fact]
     public async Task Success()
     {
         // Arrange
-        var request = RequestRegisterUserJsonBuilder.Build();
-        var useCase = CreateUseCase();
+        var user = UserBuilder.Build();
+        var request = RequestUpdateUserJsonBuilder.Build();
+
+        var useCase = CreateUseCase(user);
 
         // Act
-        var result = await useCase.Execute(request);
+        var act = async () => await useCase.Execute(request);
+
+        await act.Should().NotThrowAsync();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(request.Name);
-        result.Token.Should().NotBeNullOrWhiteSpace();
+        user.Name.Should().Be(request.Name);
+        user.Email.Should().Be(request.Email);
     }
 
     [Fact]
     public async Task Error_Name_Empty()
     {
-        var request = RequestRegisterUserJsonBuilder.Build();
+        var user = UserBuilder.Build();
+        var request = RequestUpdateUserJsonBuilder.Build();
         request.Name = string.Empty;
 
-        var useCase = CreateUseCase();
+        var useCase = CreateUseCase(user);
 
         var act = async () => await useCase.Execute(request);
 
@@ -63,9 +69,10 @@ public class RegisterUserUseCaseTest
     [Fact]
     public async Task Error_Email_Already_Exist()
     {
-        var request = RequestRegisterUserJsonBuilder.Build();
+        var user = UserBuilder.Build();
+        var request = RequestUpdateUserJsonBuilder.Build();
 
-        var useCase = CreateUseCase(request.Email);
+        var useCase = CreateUseCase(user, request.Email);
 
         var act = async () => await useCase.Execute(request);
 
