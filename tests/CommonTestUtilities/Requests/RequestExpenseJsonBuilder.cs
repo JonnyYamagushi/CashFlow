@@ -13,6 +13,7 @@ public class RequestExpenseJsonBuilder
             .RuleFor(r => r.Date, f => f.Date.Past())
             .RuleFor(r => r.Amount, f => f.Finance.Amount(decimals: 2))
             .RuleFor(r => r.Description, f => f.Lorem.Sentence())
-            .RuleFor(r => r.PaymentType, f => f.PickRandom<PaymentType>());
+            .RuleFor(r => r.PaymentType, f => f.PickRandom<PaymentType>())
+            .RuleFor(r => r.Tags, faker => faker.Make(1, () => faker.PickRandom<Tag>()));
     }
 }

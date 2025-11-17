@@ -37,6 +37,12 @@ public class ExpenseBuilder
             .RuleFor(u => u.Date, faker => faker.Date.Past())
             .RuleFor(u => u.Amount, faker => faker.Random.Decimal(min: 1, max: 1000))
             .RuleFor(e => e.PaymentType, f => f.PickRandom<PaymentType>())
-            .RuleFor(e => e.UserId, _ => user.Id);
+            .RuleFor(e => e.UserId, _ => user.Id)
+            .RuleFor(e => e.Tags, faker => faker.Make(1, () => new CashFlow.Domain.Entities.Tag
+            {
+                Id = 1,
+                Value = faker.PickRandom<CashFlow.Domain.Enums.Tag>(),
+                ExpenseId = 1
+            }));
     }
 }
